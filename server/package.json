@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll",
     "start": "node index.js",
     "dev": "nodemon -L index.js",
     "setup-db": "node ./database/setup-db.js"
@@ -22,7 +22,9 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "jest": "^29.6.4",
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }
