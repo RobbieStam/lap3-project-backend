@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+    image: mongo:6
+    container_name: mongo-juice
+    ports:
+      - 27017:27017
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_DATABASE=pomodogo
+      - MONGO_INITDB_ROOT_PASSWORD=mongomongo5
+    volumes:
+      - dbdata:/data/db
+      - ./db/seed.js:/docker-entrypoint-initdb.d/seed.js:ro
+volumes:
+  dbdata:
+    name: mongo-juice-db
