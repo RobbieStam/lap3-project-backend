@@ -1,24 +1,25 @@
-const express = require('express')
-const cors = require('cors')
-const logger = require('morgan')
+const express = require("express");
+const cors = require("cors");
+const logger = require("morgan");
 
-const taskRouter = require('./routes/taskRoutes')
+const taskRouter = require("./routes/taskRoutes");
+const userRouter = require("./routes/user");
 
+const api = express();
 
-const api = express()
+api.use(cors());
+api.use(express.json());
+api.use(logger("dev"));
 
-api.use(cors())
-api.use(express.json())
-api.use(logger('dev'))
+api.get("/", (req, res) => {
+  res.json({
+    name: "PomoDogo",
+    description: "See your tasks",
+  });
+});
+console.log({ taskRouter, userRouter });
 
-api.get('/', (req, res) => {
-    res.json({
-        name: "PomoDogo",
-        description: "See your tasks"
-    })
-})
+api.use("/tasks", taskRouter);
+api.use("/users", userRouter);
 
-api.use('/tasks', taskRouter)
-
-
-module.exports = api
+module.exports = api;
