@@ -1,6 +1,8 @@
-const { Router } = require('express')
+const { Router } = require("express");
 
-const taskRouter = Router()
-const taskController = require('../controllers/taskController')
+const taskRouter = Router();
+const taskController = require("../controllers/taskController");
 
-taskRouter.get('/', taskController.index)
+taskRouter.get("/", taskController.index);
+
+module.exports = taskRouter;
