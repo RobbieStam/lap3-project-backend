@@ -29,7 +29,7 @@ class Task {
     return task;
   }
 
-  static async create({ task, description }) {
+  static async create({ name, description, mood }) {
     await client.connect();
     let date = new Date();
     let formattedDate =
@@ -41,7 +41,7 @@ class Task {
       " " +
       date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
     const response = await client.db("tasks").collection("tasks").insertOne({
-      task: task,
+      name: name,
       description: description,
       mood: mood,
       completed_at: formattedDate,
