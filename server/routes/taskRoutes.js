@@ -5,4 +5,6 @@ const taskRouter = Router();
 
 taskRouter.get("/", taskController.index);
 
+taskRouter.get("/:id", taskController.show);
+
 module.exports = taskRouter;
