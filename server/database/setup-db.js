@@ -1,13 +1,19 @@
-const fs = require("fs");
 require("dotenv").config();
+const MongoClient = require("mongodb").MongoClient;
 
-const db = require("./connect");
+const connectionUrl = process.env.DB_CONNECTION;
 
-const sql = fs.readFileSync(__dirname + "/data.sql").toString();
+const client = new MongoClient(connectionUrl);
 
-db.query(sql)
-  .then((data) => {
-    db.end();
-    console.log("Set-up complete!");
-  })
-  .catch((error) => console.log(error));
+const connectDB = async () => {
+  try {
+    await client.connect();
+    console.log("Connected successfully 🚀");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+connectDB();
+
+module.exports = client;
