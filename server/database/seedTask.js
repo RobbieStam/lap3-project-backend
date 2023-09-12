@@ -1,5 +1,15 @@
 const client = require("./setup-db");
 
+let date = new Date();
+let formattedDate =
+  date.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }) +
+  " " +
+  date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
 const seedDB = async () => {
   try {
     await client.connect();
@@ -15,16 +25,6 @@ const seedDB = async () => {
       }
     }
 
-    let date = new Date();
-    let formattedDate =
-      date.toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }) +
-      " " +
-      date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
-
     await client
 
       .db("tasks")
@@ -32,25 +32,14 @@ const seedDB = async () => {
 
       .insertMany([
         {
-          task: "History revision",
-          description: "Hard",
-          completed_at: "hello",
-        },
-        {
           task: "Testing backend",
-          description: "Using jest to test backend",
-          completed_at: "Formatted Date:",
-          formattedDate,
+          description: "Testing backend works fine",
+          completed_at: `Completed on: ${formattedDate}`,
         },
         {
-          task: "Making timer feature",
-          description: "Pomodoro app timer feature",
-          completed_at: formattedDate,
-        },
-        {
-          task: "Testing to update",
-          description: "testing please work",
-          completed_at: formattedDate,
+          task: "Second testing backend with frontend",
+          description: "Testing backend and frontend work fine together",
+          completed_at: `Completed on: ${formattedDate}`,
         },
       ]);
     console.log("DB Seeded 🌾");
