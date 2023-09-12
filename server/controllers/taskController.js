@@ -35,7 +35,25 @@ const show = async (req, res) => {
   }
 };
 
+const create = async (req, res) => {
+  try {
+    const data = req.body;
+    const result = await Task.create(data);
+    res.status(201).json({
+      success: true,
+      response: result,
+    });
+  } catch (e) {
+    res.status(404).json({
+      success: false,
+      message: "Unable to create new task",
+      error: e,
+    });
+  }
+};
+
 module.exports = {
   index,
   show,
+  create,
 };

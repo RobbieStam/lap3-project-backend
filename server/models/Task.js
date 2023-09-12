@@ -27,6 +27,25 @@ class Task {
     task["id"] = id;
     return task;
   }
+
+  static async create({ task, description }) {
+    await client.connect();
+    let date = new Date();
+    let formattedDate =
+      date.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }) +
+      " " +
+      date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    const response = await client.db("tasks").collection("tasks").insertOne({
+      task: task,
+      description: description,
+      completed_at: formattedDate,
+    });
+    return "Task created";
+  }
 }
 
 module.exports = Task;

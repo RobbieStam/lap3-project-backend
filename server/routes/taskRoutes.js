@@ -7,4 +7,6 @@ taskRouter.get("/", taskController.index);
 
 taskRouter.get("/:id", taskController.show);
 
+taskRouter.post("/", taskController.create);
+
 module.exports = taskRouter;
