@@ -34,22 +34,25 @@ const seedDB = async () => {
         {
           task: "History revision",
           description: "Hard",
+          mood: "Good",
           completed_at: "hello",
         },
         {
           task: "Testing backend",
           description: "Using jest to test backend",
-          completed_at: "Formatted Date:",
-          formattedDate,
+          mood: "Good",
+          completed_at: formattedDate,
         },
         {
           task: "Making timer feature",
           description: "Pomodoro app timer feature",
+          mood: "Good",
           completed_at: formattedDate,
         },
         {
           task: "Testing to update",
           description: "testing please work",
+          mood: "Good",
           completed_at: formattedDate,
         },
       ]);
