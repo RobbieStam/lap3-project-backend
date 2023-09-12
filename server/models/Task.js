@@ -11,7 +11,7 @@ class Task {
 
   static async getAll() {
     await client.connect();
-    const response = await client.db("task").collection("task").find();
+    const response = await client.db("tasks").collection("tasks").find();
     const allValues = await response.toArray();
     return allValues;
   }
@@ -19,7 +19,7 @@ class Task {
   static async getOne(idx) {
     await client.connect();
     const id = new ObjectId(idx);
-    const response = await client.db("task").collection("task").find({
+    const response = await client.db("tasks").collection("tasks").find({
       _id: id,
     });
     const value = await response.toArray();
