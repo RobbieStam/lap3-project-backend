@@ -9,6 +9,16 @@ async function index(req, res) {
   }
 }
 
+async function create (req, res) {
+  try {
+      const task = await Task.create(req.body);
+      res.status(201).json(task);
+  } catch (err) {
+      res.status(404).json({"error": err.message})
+  }
+}
+
 module.exports = {
   index,
+  create
 };

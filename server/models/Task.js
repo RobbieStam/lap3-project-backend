@@ -15,6 +15,14 @@ class Task {
     }
     return response.rows.map(t => new Task(t));
   }
+
+  static async create(data) {
+    const{name, description, completed_at} = data;   
+    const response = await db.query('INSERT INTO tasks (name, description, completed_at) VALUES ($1, $2, $3) RETURNING *;', [name, description, completed_at]);
+
+    return response.rows.map(t => new Task(t))
+}
+
   
 }
 
