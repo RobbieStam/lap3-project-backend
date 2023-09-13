@@ -4,6 +4,7 @@ const taskController = require("../controllers/taskController");
 const taskRouter = Router();
 
 taskRouter.get("/", taskController.index);
+taskRouter.post("/", taskController.create);
 
 taskRouter.get("/:id", taskController.show);
 
