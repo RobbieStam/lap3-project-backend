@@ -34,12 +34,12 @@ const seedDB = async () => {
         {
           task: "Testing backend",
           description: "Testing backend works fine",
-          completed_at: `Completed on: ${formattedDate}`,
+          completed_at: formattedDate,
         },
         {
           task: "Second testing backend with frontend",
           description: "Testing backend and frontend work fine together",
-          completed_at: `Completed on: ${formattedDate}`,
+          completed_at: formattedDate,
         },
       ]);
     console.log("DB Seeded 🌾");
