@@ -6,6 +6,7 @@ const Token = require("../models/Token");
 async function register(req, res) {
   try {
     const data = req.body;
+    console.log("Register route - received data:", data);
 
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
@@ -15,6 +16,7 @@ async function register(req, res) {
 
     res.status(201).send(result);
   } catch (err) {
+    console.error("Register route - error:", err.message);
     res.status(400).json({ error: err.message });
   }
 }
