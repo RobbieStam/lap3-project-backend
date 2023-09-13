@@ -2,7 +2,8 @@ const Task = require("../models/Task");
 
 async function index(req, res) {
   try {
-    const tasks = await Task.getAll();
+    const userId = req.user.userId;
+    const tasks = await Task.getAll(userId);
     res.status(200).json({
       success: true,
       task: tasks,
@@ -38,6 +39,7 @@ const show = async (req, res) => {
 const create = async (req, res) => {
   try {
     const data = req.body;
+    data.userId = req.user.userId;
     const result = await Task.create(data);
     res.status(201).json({
       success: true,

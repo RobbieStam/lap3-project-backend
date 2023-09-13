@@ -1,45 +1,44 @@
 const { v4: uuidv4 } = require("uuid");
-
-const db = require("../database/connect");
+const { MongoClient, ObjectId } = require("mongodb");
+const client = require("../database/setup-db");
 
 class Token {
-  constructor({ token_id, user_id, token }) {
-    this.token_id = token_id;
-    this.user_id = user_id;
+  constructor({ _id, userId, token }) {
+    this.id = _id;
+    this.userId = userId;
     this.token = token;
   }
 
-  static async create(user_id) {
+  static async create(userId) {
+    await client.connect();
+    const db = client.db("pomodogo");
     const token = uuidv4();
-    const response = await db.query(
-      "INSERT INTO token (user_id, token) VALUES ($1, $2) RETURNING token_id;",
-      [user_id, token]
-    );
-    const newId = response.rows[0].token_id;
-    const newToken = await Token.getOneById(newId);
-    return newToken;
+    const result = await db
+      .collection("tokens")
+      .insertOne({ userId: new ObjectId(userId), token });
+    return new Token({ ...result.ops[0], id: result.insertedId });
   }
 
   static async getOneById(id) {
-    const response = await db.query("SELECT * FROM token WHERE token_id = $1", [
-      id,
-    ]);
-    if (response.rows.length != 1) {
+    await client.connect();
+    const db = client.db("pomodogo");
+    const tokenDoc = await db
+      .collection("tokens")
+      .findOne({ _id: new ObjectId(id) });
+    if (!tokenDoc) {
       throw new Error("Unable to locate token.");
-    } else {
-      return new Token(response.rows[0]);
     }
+    return new Token(tokenDoc);
   }
 
   static async getOneByToken(token) {
-    const response = await db.query("SELECT * FROM token WHERE token = $1", [
-      token,
-    ]);
-    if (response.rows.length != 1) {
+    await client.connect();
+    const db = client.db("pomodogo");
+    const tokenDoc = await db.collection("tokens").findOne({ token });
+    if (!tokenDoc) {
       throw new Error("Unable to locate token.");
-    } else {
-      return new Token(response.rows[0]);
     }
+    return new Token(tokenDoc);
   }
 }
 
