@@ -3,10 +3,11 @@ const client = require("../database/setup-db");
 
 class Task {
   constructor(data) {
-    this.id = data.id;
-    this.task = data.task;
-    this.description = data.description;
-    this.completed_at = data.completed_at;
+    this.id = data.id
+    this.name = data.name
+    this.description = data.description
+    this.mood = data.mood
+    this.completed_at = data.completed_at
   }
 
   static async getAll(userId) {
@@ -31,7 +32,9 @@ class Task {
     return task;
   }
 
-  static async create({ userId, task, description }) {
+
+  static async create({ userId, name, description, mood }) {
+
     await client.connect();
     let date = new Date();
     let formattedDate =
@@ -42,15 +45,18 @@ class Task {
       }) +
       " " +
       date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
     const response = await client
       .db("pomodogo")
       .collection("tasks")
       .insertOne({
         userId: ObjectId(userId),
-        task: task,
+        name: name,
         description: description,
+        mood: mood,
         completed_at: formattedDate,
-      });
+    });
+
     return "Task created";
   }
 }

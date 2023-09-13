@@ -34,6 +34,7 @@ const seedDB = async () => {
       .collection("tasks")
       .insertMany([
         {
+
           userId: new ObjectId(userId),
           task: "Testing backend",
           description: "Testing backend works fine",
@@ -43,6 +44,29 @@ const seedDB = async () => {
           userId: new ObjectId(userId),
           task: "Second testing backend with frontend",
           description: "Testing backend and frontend work fine together",
+
+          task: "History revision",
+          description: "Hard",
+          mood: "Good",
+          completed_at: "hello",
+        },
+        {
+          task: "Testing backend",
+          description: "Using jest to test backend",
+          mood: "Good",
+          completed_at: formattedDate,
+        },
+        {
+          task: "Making timer feature",
+          description: "Pomodoro app timer feature",
+          mood: "Good",
+          completed_at: formattedDate,
+        },
+        {
+          task: "Testing to update",
+          description: "testing please work",
+          mood: "Good",
+
           completed_at: formattedDate,
         },
       ]);

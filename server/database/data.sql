@@ -7,13 +7,14 @@ CREATE TABLE tasks(
   id INT GENERATED ALWAYS AS IDENTITY,
   name VARCHAR (100) NOT NULL,
   description VARCHAR (1000) NOT NULL,
+  mood VARCHAR (15) NOT NULL,
   completed_at VARCHAR(200) NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO tasks (name, description, completed_at)
+INSERT INTO tasks (name, description, mood, completed_at)
 VALUES
-('Deploying_Backend', 'creating an MVC quickly with a single model to deploy our backend by 1pm', '11:39PM-9/11/2023');
+('Deploying_Backend', 'creating an MVC quickly with a single model to deploy our backend by 1pm', 'Good', '11:39PM-9/11/2023');
 
 CREATE TABLE post (
     post_id INT GENERATED ALWAYS AS IDENTITY,
