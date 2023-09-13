@@ -3,9 +3,11 @@ const { MongoClient, ObjectId } = require("mongodb");
 const client = require("../database/setup-db");
 
 class User {
-  constructor({ userId, username, password, isAdmin }) {
+  constructor({ userId, name, username, email, password, isAdmin }) {
     this.userId = userId;
+    this.name = name;
     this.username = username;
+    this.email = email;
     this.password = password;
     this.isAdmin = isAdmin;
   }
@@ -13,7 +15,9 @@ class User {
   static async getOneById(id) {
     await client.connect();
     const db = client.db("pomodogo");
-    const user = await db.collection("users").findOne({ _id: ObjectId(id) });
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(id) });
     if (!user) {
       throw new Error("Unable to locate user.");
     }
@@ -33,10 +37,13 @@ class User {
   static async create(data) {
     await client.connect();
     const db = client.db("pomodogo");
-    const { username, password, isAdmin } = data;
+
+    const { name, username, email, password, isAdmin = false } = data;
+
     const result = await db
       .collection("users")
-      .insertOne({ username, password, isAdmin });
+      .insertOne({ name, username, email, password, isAdmin });
+
     const newId = result.insertedId;
     return User.getOneById(newId);
   }
