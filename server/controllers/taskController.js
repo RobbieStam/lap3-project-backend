@@ -3,7 +3,9 @@ const Task = require("../models/Task");
 async function index(req, res) {
   try {
     const userId = req.user.userId;
+    console.log("userId:", userId);
     const tasks = await Task.getAll(userId);
+    console.log("tasks:", tasks);
     res.status(200).json({
       success: true,
       task: tasks,
@@ -37,6 +39,7 @@ const show = async (req, res) => {
 };
 
 const create = async (req, res) => {
+  console.log("req.user in create function:", req.user);
   try {
     const data = req.body;
     data.userId = req.user.userId;
@@ -46,6 +49,7 @@ const create = async (req, res) => {
       response: result,
     });
   } catch (e) {
+    console.error(e);
     res.status(404).json({
       success: false,
       message: "Unable to create new task",

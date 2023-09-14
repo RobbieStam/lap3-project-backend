@@ -3,21 +3,26 @@ const client = require("../database/setup-db");
 
 class Task {
   constructor(data) {
-    this.id = data.id
-    this.name = data.name
-    this.description = data.description
-    this.mood = data.mood
-    this.completed_at = data.completed_at
+    this.id = data.id;
+    this.name = data.name;
+    this.description = data.description;
+    this.mood = data.mood;
+    this.completed_at = data.completed_at;
   }
 
   static async getAll(userId) {
-    await client.connect();
-    const response = await client
-      .db("pomodogo")
-      .collection("tasks")
-      .find({ userId: ObjectId(userId) });
-    const allValues = await response.toArray();
-    return allValues;
+    try {
+      await client.connect();
+      const response = await client
+        .db("pomodogo")
+        .collection("tasks")
+        .find({ userId: new ObjectId(userId) });
+      const allValues = await response.toArray();
+      console.log("allValues:", allValues);
+      return allValues;
+    } catch (e) {
+      console.error("Error in getAll method:", e);
+    }
   }
 
   static async getOne(idx) {
@@ -32,9 +37,7 @@ class Task {
     return task;
   }
 
-
   static async create({ userId, name, description, mood }) {
-
     await client.connect();
     let date = new Date();
     let formattedDate =
@@ -50,12 +53,12 @@ class Task {
       .db("pomodogo")
       .collection("tasks")
       .insertOne({
-        userId: ObjectId(userId),
+        userId: new ObjectId(userId),
         name: name,
         description: description,
         mood: mood,
         completed_at: formattedDate,
-    });
+      });
 
     return "Task created";
   }
