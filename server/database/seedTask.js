@@ -34,7 +34,6 @@ const seedDB = async () => {
       .collection("tasks")
       .insertMany([
         {
-
           userId: new ObjectId(userId),
           task: "Testing backend",
           description: "Testing backend works fine",

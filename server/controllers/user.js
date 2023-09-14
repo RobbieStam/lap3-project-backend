@@ -7,10 +7,8 @@ async function register(req, res) {
   try {
     const data = req.body;
 
-    // Generate a salt with a specific cost
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
-    // Hash the password
     data["password"] = await bcrypt.hash(data["password"], salt);
 
     const result = await User.create(data);
@@ -37,8 +35,8 @@ async function login(req, res) {
       console.log("Password does not match");
       throw new Error("Incorrect credentials.");
     }
-
-    const token = await Token.create(user.id);
+    console.log("User object before token creation:", user);
+    const token = await Token.create(user.userId);
     if (!token) {
       console.log("Token creation failed");
       throw new Error("Token creation failed");
