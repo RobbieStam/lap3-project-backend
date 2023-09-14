@@ -15,7 +15,7 @@ describe('task controller', () => {
   afterAll(() => jest.resetAllMocks());
 
   it('returns tasks with status 200', async () => {
-    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner', completed_at:'11:05PM-9/11/2023' }
+    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner' }
 
     jest.spyOn(Task, 'getAll')
       .mockResolvedValue(taskData)
@@ -26,7 +26,7 @@ describe('task controller', () => {
 
 
   it('calls Task.getAll', async () => {
-    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner', completed_at:'11:05PM-9/11/2023' }
+    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner' }
 
     jest.spyOn(Task, 'getAll')
       .mockResolvedValue(taskData)
@@ -45,7 +45,7 @@ describe('task controller', () => {
   })
   
   it('calls Task.create', async () => {
-    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner', completed_at:'11:05PM-9/11/2023' }
+    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner' }
 
     jest.spyOn(Task, 'create')
       .mockResolvedValue(new Task(taskData))
@@ -56,7 +56,7 @@ describe('task controller', () => {
   })
 
   it('create returns a new task with a 201 status code', async () => {
-    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner', completed_at:'11:05PM-9/11/2023' }
+    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner'}
 
     jest.spyOn(Task, 'create')
       .mockResolvedValue(new Task(taskData))
@@ -68,4 +68,13 @@ describe('task controller', () => {
     expect(mockJson).toHaveBeenCalledWith(new Task(taskData))
   })
 
+  it('calls Task.getOne', async () => {
+    const taskData = { id: 1, name: 'Wash Dishes', description: 'wash dishes after dinner'}
+
+    jest.spyOn(Task, 'getOne')
+      .mockResolvedValue(taskData)
+
+      await taskController.show(null, mockRes)
+    expect(Task.getOne()).toHaveBeenCalledTimes(1)
+  })
 })
