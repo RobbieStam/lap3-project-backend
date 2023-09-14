@@ -16,7 +16,7 @@ class Token {
     const result = await db
       .collection("tokens")
       .insertOne({ userId: new ObjectId(userId), token });
-    return new Token({ ...result.ops[0], id: result.insertedId });
+    return new Token({ _id: result.insertedId, userId, token });
   }
 
   static async getOneById(id) {

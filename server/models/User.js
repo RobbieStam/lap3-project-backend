@@ -24,10 +24,10 @@ class User {
     return new User(user);
   }
 
-  static async getOneByUsername(username) {
+  static async getOneByEmail(email) {
     await client.connect();
     const db = client.db("pomodogo");
-    const user = await db.collection("users").findOne({ username: username });
+    const user = await db.collection("users").findOne({ email: email });
     if (!user) {
       throw new Error("Unable to locate user.");
     }
@@ -40,12 +40,10 @@ class User {
 
     const { name, username, email, password, isAdmin = false } = data;
 
-    const result = await db
-      .collection("users")
-      .insertOne({ name, username, email, password, isAdmin });
+    const result = await db.collection("users").insertOne({ ...data, isAdmin });
 
     const newId = result.insertedId;
-    return User.getOneById(newId);
+    return new User({ ...data, userId: newId });
   }
 }
 
