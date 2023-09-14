@@ -1,44 +1,51 @@
-const db = require("../database/connect");
+const { MongoClient, ObjectId } = require("mongodb");
+
+const client = require("../database/setup-db");
 
 class User {
-  constructor({ user_id, username, password, is_admin }) {
-    this.id = user_id;
+  constructor({ userId, name, username, email, password, isAdmin }) {
+    this.userId = userId;
+    this.name = name;
     this.username = username;
+    this.email = email;
     this.password = password;
-    this.isAdmin = is_admin;
+    this.isAdmin = isAdmin;
   }
 
   static async getOneById(id) {
-    const response = await db.query(
-      "SELECT * FROM user_account WHERE user_id = $1",
-      [id]
-    );
-    if (response.rows.length != 1) {
+    await client.connect();
+    const db = client.db("pomodogo");
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(id) });
+    if (!user) {
       throw new Error("Unable to locate user.");
     }
-    return new User(response.rows[0]);
+    return new User(user);
   }
 
   static async getOneByUsername(username) {
-    const response = await db.query(
-      "SELECT * FROM user_account WHERE username = $1",
-      [username]
-    );
-    if (response.rows.length != 1) {
+    await client.connect();
+    const db = client.db("pomodogo");
+    const user = await db.collection("users").findOne({ username: username });
+    if (!user) {
       throw new Error("Unable to locate user.");
     }
-    return new User(response.rows[0]);
+    return new User(user);
   }
 
   static async create(data) {
-    const { username, password, isAdmin } = data;
-    let response = await db.query(
-      "INSERT INTO user_account (username, password) VALUES ($1, $2) RETURNING user_id;",
-      [username, password]
-    );
-    const newId = response.rows[0].user_id;
-    const newUser = await User.getOneById(newId);
-    return newUser;
+    await client.connect();
+    const db = client.db("pomodogo");
+
+    const { name, username, email, password, isAdmin = false } = data;
+
+    const result = await db
+      .collection("users")
+      .insertOne({ name, username, email, password, isAdmin });
+
+    const newId = result.insertedId;
+    return User.getOneById(newId);
   }
 }
 

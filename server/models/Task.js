@@ -10,9 +10,12 @@ class Task {
     this.completed_at = data.completed_at
   }
 
-  static async getAll() {
+  static async getAll(userId) {
     await client.connect();
-    const response = await client.db("tasks").collection("tasks").find();
+    const response = await client
+      .db("pomodogo")
+      .collection("tasks")
+      .find({ userId: ObjectId(userId) });
     const allValues = await response.toArray();
     return allValues;
   }
@@ -20,7 +23,7 @@ class Task {
   static async getOne(idx) {
     await client.connect();
     const id = new ObjectId(idx);
-    const response = await client.db("tasks").collection("tasks").find({
+    const response = await client.db("pomodogo").collection("tasks").find({
       _id: id,
     });
     const value = await response.toArray();
@@ -29,7 +32,9 @@ class Task {
     return task;
   }
 
-  static async create({ name, description, mood }) {
+
+  static async create({ userId, name, description, mood }) {
+
     await client.connect();
     let date = new Date();
     let formattedDate =
@@ -40,12 +45,18 @@ class Task {
       }) +
       " " +
       date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
-    const response = await client.db("tasks").collection("tasks").insertOne({
-      name: name,
-      description: description,
-      mood: mood,
-      completed_at: formattedDate,
+
+    const response = await client
+      .db("pomodogo")
+      .collection("tasks")
+      .insertOne({
+        userId: ObjectId(userId),
+        name: name,
+        description: description,
+        mood: mood,
+        completed_at: formattedDate,
     });
+
     return "Task created";
   }
 }
