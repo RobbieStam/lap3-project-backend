@@ -1,5 +1,5 @@
 # Pomodogo API by Mongo-Juice
-Repository for the back-end of our Lap 3 project. Meant to be used in conjunction with our [front-end](https://github.com/SamM71/lap3-project-frontend)
+Repository for the back-end of our Lap 3 project. Meant to be used in conjunction with our [front-end](https://github.com/SamM71/lap3-project-frontend).
 
 ## Installation and Usage
 - **Clone** this repository: `git clone <repo>`
